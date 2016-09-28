@@ -1,0 +1,1 @@
+﻿select booking_id,response_status,date(rbar.created),cg_id,first_name||' '||last_name as CG,phnum ,regexp_replace(remarks,E'[\\n\\r\u2028]+',' ','g') from "RequestBooking_cgallocationresponse" rbar join "UserManagement_c24provider" ump  join  "InteractionManager_phonenumber" imp on ump.phone_id = imp.id  on rbar.cg_id =ump.id where date(rbar.created)>= current_date -30
