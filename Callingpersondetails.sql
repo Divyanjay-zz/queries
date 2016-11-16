@@ -6,4 +6,4 @@ left  join "UserManagement_c24customer" umc on imc.phnum_id = umc.phnum_id
 left join "InteractionManager_calldisposition" imcd on imc.id =imcd.callrecord_id 
 left join  "InteractionManager_calldispositiontype" imcdp on imcd.call_disposition_type_id = imcdp.id 
 left join auth_user au on cc.auth_user_id = au.id
-where date(imc.created+interval'5:30') >= current_date-2 and cc.auth_user_id in('43','1046','1389','1440')
+where date(imc.created+interval'5:30') >= current_date-2 and cc.auth_user_id in('43','1046','1389','1440','1441','840','1527','1127','7')

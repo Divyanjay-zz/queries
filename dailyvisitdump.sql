@@ -51,5 +51,5 @@ left join (SELECT  a.customer_id,date(modified+interval'5:30') as modified,closi
         join (select customer_id, max(modified) max from "Billing_ledgerdetail" group by customer_id) b
         on a.customer_id = b.customer_id and a.modified = b.max)a on umc.id  = a.customer_id 
 
-where(date_time at time zone 'Asia/Calcutta')::date between current_date-5 and current_date
+where(date_time at time zone 'Asia/Calcutta')::date between current_date-3 and current_date
 order by visit_date

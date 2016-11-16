@@ -1,6 +1,6 @@
 ﻿SELECT umc.id ,umc.first_name||' '||coalesce(umc.last_name,''),phnum,umc.email,
-(case when payment_mode = '1' then 'Online'
-when payment_mode = '2' then 'Offline' else null end),date(collection_date+interval'5:30'),to_char(collection_date+interval'5:30','HH24:mi:ss'),
+(case when umct.payment_mode = '1' then 'Online'
+when umct.payment_mode = '2' then 'Offline' else null end),date(collection_date+interval'5:30'),to_char(collection_date+interval'5:30','HH24:mi:ss'),
 (case when collection_agent = '1' then 'Rahul'
 when collection_agent = '2' then 'Rajesh'
 when collection_agent = '3' then 'Ajay'

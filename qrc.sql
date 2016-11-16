@@ -1,3 +1,60 @@
-﻿SELECT date(qts.created),qts.id,category,qts.status,qts.due_date  at time zone 'Asia/Calcutta' as due_date,au_1.first_name||' '||au_1.last_name as assigned_user ,qta.modified at time zone 'Asia/Calcutta' as modified  ,au_2.first_name||' '||au_2.last_name as created_by,umt.name as  assigned_team,lml.phone   FROM "QRCTicketing_serviceticket" qts join "QRCTicketing_actionticket" qta on qts.id =qta.serviceticket_id join auth_user au_1 on qta.assigned_user_id = au_1.id left join auth_user au_2
+﻿--DATE 	Ticket ID	Category_id	Status_id	Due By	Assigned User	Modified Time	Created_by	Assigned team	Phone	Category	Status	Week	elapsed	Weeknum	date
+
+
+SELECT to_char((qts.created +interval'5:30'),'yyyy-MM-DD HH24:MI:SS'),qts.id,
+(case when category = '1' then 'CG-NoShow'
+when category = '2' then 'C24-WrongInvoice'
+when category = '3' then 'C24-InvoiceDelay'
+when category = '4' then 'CG-NotTrained'
+when category = '5' then 'CG-UnHygienic'
+when category = '6' then 'CG-NotPunctual'
+when category = '7' then 'C24-NoAllocation'
+when category = '8' then 'C24-NewBooking'
+when category = '9' then 'ReplacementRequest'
+when category = '10' then 'CG-LeaveRequest'
+when category = '11' then 'CX-Complaints'
+when category = '12' then 'CG-TaskCompletion'
+when category = '13' then 'CG-Behaviour'
+when category = '14' then 'CG-AsksforPayment'
+when category = '15' then 'CG-Crime'
+when category = '16' then 'CX-Feedback'
+when category = '17' then 'CX-Query'
+when category = '18' then 'CX-NoCommunication'
+when category = '19' then 'CG-PaymentRequest'
+when category = '20' then 'CG-PaymentDelay'
+when category = '21' then 'CG-WrongPayment'
+when category = '22' then 'CG-RequestForWork'
+when category = '23' then 'CG-NewApplication'
+when category = '24' then 'CG-InformationRequest'
+when category = '25' then 'CG-ContractTermination'
+when category = '26' then 'OTHERS'
+when category = '27' then 'CG-Complaints'
+when category = '28' then 'CX-CancelRequest'
+when category = '29' then 'CG-MissedCall'
+when category = '30' then 'OnlinePaymentLink'
+when category = '31' then 'PaymentPickup'
+when category = '32' then 'RefundRequest'
+when category = '33' then 'CX-CallBack'
+when category = '34' then 'Physio-CancelReschedule'
+when category = '35' then 'Physio-Complaints'
+when category = '36' then 'ServiceCompletion'
+when category = '37' then 'CG-NotMarkedEndOfDuty'
+when category = '38' then 'CG-NoShow_Again'
+when category = '39' then 'BookingCancelledReview'	
+when category = '40' then 'CrossSellingCase-Physio'
+when category = '41' then 'OnlinePaymentPending'
+when category = '42' then 'OfflinePaymentNotDone'
+when category = '43' then 'CG-UnplannedLeave'
+when category = '44' then 'PathologyTestRequest'
+when category = '45' then 'EquipmentRequest'
+when category = '46' then 'MedicineDeliveryRequest'
+when category = '47' then 'MedicalAidsRequest'
+when category = '48' then 'CollectionCalling' else null end)as category,
+( case when qts.status = '1' then 'Open'
+when qts.status = '2' then 'WorkinProgress'
+when qts.status = '3' then 'Closed'
+when qts.status = '4' then 'Reopen'
+when qts.status = '5' then 'Rejected' else null end ) as status
+,qts.due_date  at time zone 'Asia/Calcutta' as due_date,au_1.first_name||' '||au_1.last_name as assigned_user ,to_char((qta.modified +interval'5:30'),'yyyy-MM-DD HH24:MI:SS') modified  ,au_2.first_name||' '||au_2.last_name as created_by,umt.name as  assigned_team,lml.phone,rbb.service,regexp_replace(qts.remarks,E'[\\n\\r\\u2028]+','','g') as remarks   FROM "QRCTicketing_serviceticket" qts join "QRCTicketing_actionticket" qta on qts.id =qta.serviceticket_id join auth_user au_1 on qta.assigned_user_id = au_1.id left join auth_user au_2
 on qts.created_by_id =au_2.id left join "UserManagement_c24team" umt on qts.assigned_team_id = umt.id left  join "RequestBooking_booking" rbb on qts.booking_id = rbb.id left join "LeadManager_lead" lml on rbb.for_lead_id = lml.id 
-where DATE(qts.created) >=date_trunc('month', current_date ) order by 1
+where DATE(qts.created) between '2016-10-01' and '2016-10-31' order by 1
